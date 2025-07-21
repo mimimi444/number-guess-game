@@ -108,7 +108,27 @@ app.post('/api/get-hint', async (req, res) => {
     console.log("Incorrect guess. Generating hint...");
     let hits = 0;
     let blows = 0;
-    // ... (Hint logic remains the same)
+    const randomNumCounts = {};
+    const userGuessCounts = {};
+
+    // Hitのカウントと各数字の出現回数を記録
+    for (let i = 0; i < 4; i++) {
+        if (userGuessStr[i] === randomNumStr[i]) {
+            hits++;
+        } else {
+            randomNumCounts[randomNumStr[i]] = (randomNumCounts[randomNumStr[i]] || 0) + 1;
+            userGuessCounts[userGuessStr[i]] = (userGuessCounts[userGuessStr[i]] || 0) + 1;
+        }
+    }
+
+    // Blowのカウント
+    for (const digit in userGuessCounts) {
+        if (randomNumCounts[digit]) {
+            blows += Math.min(userGuessCounts[digit], randomNumCounts[digit]);
+        }
+    }
+
+    const hintDirection = Number(userGuess) < randomNumber ? 'もっと大きな数字' : 'もっと小さい数字';
 
     try {
         const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
