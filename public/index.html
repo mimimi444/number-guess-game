@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数当てゲーム</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>上司のPCから機密を盗め！</h1>
+    <p>パスワード（4桁の数字）を当てて、嫌いな上司のパソコンを覗き見ちゃおう！<br>チャンスは10回！</p>
+    <div id="devil-container">
+        <img id="devil-icon" src="devil.png" alt="悪魔">
+        <p id="devil-message"></p>
+    </div>
+    <input type="number" id="guessField">
+    <input type="submit" value="入力" id="guessSubmit">
+    <div class="resultParas">
+        <p class="guesses"></p>
+        <p class="lastResult"></p>
+        <p class="lowOrHi"></p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

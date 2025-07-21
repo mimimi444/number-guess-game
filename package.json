@@ -1,0 +1,23 @@
+{
+  "name": "gemini-number-guess-game",
+  "version": "1.0.0",
+  "description": "A number guessing game powered by Gemini.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "18.x"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "dotenv": "^17.2.0",
+    "express": "^5.10.0"
+  },
+  "keywords": [
+    "gemini",
+    "game",
+    "nodejs"
+  ],
+  "author": "",
+  "license": "ISC"
+}
