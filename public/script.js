@@ -9,6 +9,8 @@ const guessField = document.querySelector('#guessField');
 let guessCount = 1;
 let resetButton;
 
+const restartButton = document.querySelector('#restartButton'); // リスタートボタンの要素を取得
+
 devilMessage.textContent = 'パスワードは4桁だよ！';
 
 // ページロード時に初期セリフを取得
@@ -21,6 +23,8 @@ window.addEventListener('DOMContentLoaded', async () => {
         devilMessage.textContent = '初期メッセージの取得に失敗したようだぜ…';
     }
 });
+
+restartButton.addEventListener('click', resetGame); // リスタートボタンにイベントリスナーを追加
 
 async function checkGuess() {
     let userGuess = guessField.value.trim(); // 文字列として取得
@@ -81,6 +85,8 @@ guessSubmit.addEventListener('click', checkGuess);
 function setGameOver() {
     guessField.disabled = true;
     guessSubmit.disabled = true;
+    restartButton.style.display = 'none'; // リスタートボタンを非表示にする
+
     resetButton = document.createElement('button');
     resetButton.textContent = 'もう一度遊ぶ';
     document.body.appendChild(resetButton);
@@ -99,7 +105,10 @@ async function resetGame() {
     }
     guesses.textContent = '';
 
-    resetButton.parentNode.removeChild(resetButton);
+    // 「もう一度遊ぶ」ボタンを削除する（存在する場合）
+    if (resetButton && resetButton.parentNode) {
+        resetButton.parentNode.removeChild(resetButton);
+    }
 
     guessField.disabled = false;
     guessSubmit.disabled = false;
@@ -108,6 +117,8 @@ async function resetGame() {
 
     lastResult.style.color = '#e0e0e0';
     lastResult.textContent = '';
+
+    restartButton.style.display = 'inline-block'; // リスタートボタンを再表示する
 
     try {
         const response = await fetch('/api/reset', { method: 'POST' });

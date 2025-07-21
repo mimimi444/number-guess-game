@@ -46,6 +46,16 @@ input[type="submit"] {
     cursor: pointer;
 }
 
+#restartButton {
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff; /* Blue color for restart button */
+    color: white;
+    cursor: pointer;
+}
+
 .resultParas p {
     margin: 5px 0;
 }
