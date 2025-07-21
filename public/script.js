@@ -85,7 +85,6 @@ guessSubmit.addEventListener('click', checkGuess);
 function setGameOver() {
     guessField.disabled = true;
     guessSubmit.disabled = true;
-    restartButton.style.display = 'none'; // リスタートボタンを非表示にする
 
     resetButton = document.createElement('button');
     resetButton.textContent = 'もう一度遊ぶ';
@@ -117,8 +116,6 @@ async function resetGame() {
 
     lastResult.style.color = '#e0e0e0';
     lastResult.textContent = '';
-
-    restartButton.style.display = 'inline-block'; // リスタートボタンを再表示する
 
     try {
         const response = await fetch('/api/reset', { method: 'POST' });
