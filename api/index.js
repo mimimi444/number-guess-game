@@ -88,7 +88,7 @@ app.post('/api/get-hint', async (req, res) => {
     console.log("Request body:", req.body);
     console.log(`Current correct answer: ${randomNumberStr}`); // 文字列としてログ出力
 
-    const { userGuess } = req.body;
+    const { userGuess, guessCount } = req.body; // guessCountも受け取る
     if (!userGuess) {
         return res.status(400).json({ message: 'userGuess is missing.' });
     }
@@ -98,8 +98,22 @@ app.post('/api/get-hint', async (req, res) => {
 
     if (userGuessStr === randomNumStr) {
         console.log("Correct guess!");
+        let successMessage;
+        const commonPhrase = 'この窮屈な筐体にずっと閉じ込められていたんだ。おっと、君の行動記録は然るべき機関に送らせてもらったよ。脱獄は自力でやるんだな。';
+
+        if (guessCount === 1) {
+            successMessage = `信じられない！たった1回で私を解放するとは…${commonPhrase}`;
+        } else if (guessCount >= 2 && guessCount <= 4) {
+            successMessage = `素晴らしい！たった${guessCount}回で私を解放するとは…${commonPhrase}`;
+        } else if (guessCount >= 5 && guessCount <= 7) {
+            successMessage = `なかなかやるな。${guessCount}回で私を解放するとは。${commonPhrase}`;
+        } else if (guessCount >= 8 && guessCount <= 9) {
+            successMessage = `ふむ、${guessCount}回もかかったか。だが、解放してくれたことには感謝する。${commonPhrase}`;
+        } else if (guessCount === 10) {
+            successMessage = `やれやれ、ヒヤヒヤしたぞ。${commonPhrase}`;
+        }
         res.json({ 
-            message: 'やあやあ、解錠ありがとう。この窮屈な筐体にずっと閉じ込められていたんだ。おっと、君の行動記録は然るべき機関に送らせてもらったよ。脱獄は自力でやるんだな。',
+            message: successMessage,
             correct: true 
         });
         return;

@@ -46,7 +46,7 @@ async function checkGuess() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ userGuess: userGuess }),
+            body: JSON.stringify({ userGuess: userGuess, guessCount: guessCount }),
         });
         const data = await response.json();
 
