@@ -45,13 +45,13 @@ async function generateThemedNumberAndHint() {
             const parsed = JSON.parse(jsonString);
             console.log("Parsed JSON (generateThemedNumberAndHint):", parsed);
 
-            const num = Number(parsed.number);
-            if (num >= 1000 && num <= 9999) {
-                randomNumber = num;
+            const numStr = String(parsed.number);
+            if (numStr.length === 4 && !isNaN(Number(numStr))) {
+                randomNumber = Number(numStr);
                 currentThemeComment = parsed.comment;
                 console.log(`New password set: ${randomNumber}, Hint: ${currentThemeComment}`);
             } else {
-                throw new Error(`Generated number is not 4 digits: ${parsed.number}`);
+                throw new Error(`Generated number is not 4 digits or not a valid number: ${parsed.number}`);
             }
         } else {
             throw new Error("Could not find JSON block in Gemini response.");
