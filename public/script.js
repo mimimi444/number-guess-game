@@ -23,8 +23,10 @@ window.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function checkGuess() {
-    let userGuess = Number(guessField.value);
-    if (!userGuess || userGuess < 1000 || userGuess > 9999) {
+    let userGuess = guessField.value.trim(); // 文字列として取得
+
+    // 4桁の数字であるか検証
+    if (!/^[0-9]{4}$/.test(userGuess)) {
         devilMessage.textContent = 'おいおい、4桁の数字を入力しろよな。';
         return;
     }

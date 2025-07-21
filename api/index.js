@@ -11,7 +11,7 @@ if (!process.env.GEMINI_API_KEY) {
 }
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-let randomNumber;
+let randomNumberStr; // 正解の数字を文字列として保持
 let currentThemeComment = '';
 
 async function generateThemedNumberAndHint() {
@@ -47,9 +47,9 @@ async function generateThemedNumberAndHint() {
 
             const numStr = String(parsed.number);
             if (numStr.length === 4 && !isNaN(Number(numStr))) {
-                randomNumber = Number(numStr);
+                randomNumberStr = numStr; // 文字列として保存
                 currentThemeComment = parsed.comment;
-                console.log(`New password set: ${randomNumber}, Hint: ${currentThemeComment}`);
+                console.log(`New password set: ${randomNumberStr}, Hint: ${currentThemeComment}`);
             } else {
                 throw new Error(`Generated number is not 4 digits or not a valid number: ${parsed.number}`);
             }
@@ -59,7 +59,7 @@ async function generateThemedNumberAndHint() {
     } catch (error) {
         console.error('--- Gemini API Error in generateThemedNumberAndHint ---');
         console.error(error);
-        randomNumber = Math.floor(Math.random() * 9000) + 1000;
+        randomNumberStr = String(Math.floor(Math.random() * 9000) + 1000); // エラー時はランダムな4桁の文字列
         currentThemeComment = 'おっと、電波の調子が悪いみたいだ。リロードしてもう一度試してみてくれ。';
         // Re-throw the error to be caught by the calling handler
         throw error;
@@ -86,7 +86,7 @@ app.get('/api/init', async (req, res) => {
 app.post('/api/get-hint', async (req, res) => {
     console.log("--- /api/get-hint START ---");
     console.log("Request body:", req.body);
-    console.log(`Current correct answer: ${randomNumber}`);
+    console.log(`Current correct answer: ${randomNumberStr}`); // 文字列としてログ出力
 
     const { userGuess } = req.body;
     if (!userGuess) {
@@ -94,7 +94,7 @@ app.post('/api/get-hint', async (req, res) => {
     }
 
     const userGuessStr = String(userGuess);
-    const randomNumStr = String(randomNumber);
+    const randomNumStr = randomNumberStr; // 文字列として取得
 
     if (userGuessStr === randomNumStr) {
         console.log("Correct guess!");
@@ -128,7 +128,7 @@ app.post('/api/get-hint', async (req, res) => {
         }
     }
 
-    const hintDirection = Number(userGuess) < randomNumber ? 'もっと大きな数字' : 'もっと小さい数字';
+    const hintDirection = Number(userGuess) < Number(randomNumberStr) ? 'もっと大きな数字' : 'もっと小さい数字'; // 数値に変換して比較
 
     try {
         const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
